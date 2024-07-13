@@ -47,7 +47,7 @@ jobs:
 
       - name: Build with Gradle
         working-directory: budget-book-backend
-        run: ./gradlew build -x test
+        run: ./gradlew build -x test -x integrationTest -x detektIntegrationTest
 
       - name: Run Unit Tests
         working-directory: budget-book-backend

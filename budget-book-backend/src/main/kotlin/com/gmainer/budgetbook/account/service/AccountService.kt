@@ -13,7 +13,9 @@ class AccountService(private val accountRepository: AccountRepository) {
     }
 
     fun findById(id: Long): AccountResponse {
-        val account = accountRepository.findById(id).orElseThrow { NoSuchElementException("Account not found with id $id") }
+        val account = accountRepository.findById(
+            id
+        ).orElseThrow { NoSuchElementException("Account not found with id $id") }
         return account.toResponse()
     }
 }

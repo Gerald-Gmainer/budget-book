@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class BudgetBookBackendApplication
 
 fun main(args: Array<String>) {
+    @Suppress("SpreadOperator")
     runApplication<BudgetBookBackendApplication>(*args)
 }

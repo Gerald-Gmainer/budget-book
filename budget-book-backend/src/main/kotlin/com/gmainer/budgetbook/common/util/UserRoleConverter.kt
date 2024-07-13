@@ -5,4 +5,3 @@ import jakarta.persistence.Converter
 
 @Converter(autoApply = true)
 class UserRoleConverter : EnumConverter<UserRole>(UserRole::class.java)
-

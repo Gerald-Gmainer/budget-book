@@ -3,7 +3,6 @@ package com.gmainer.budgetbook.category.model
 import com.gmainer.budgetbook.category.dto.CategoryResponse
 import jakarta.persistence.*
 
-
 @Entity
 @Table(name = "categories")
 data class Category(

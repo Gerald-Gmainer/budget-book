@@ -21,9 +21,8 @@ class DashboardController(private val summaryService: BudgetSummaryService) {
         @RequestParam(required = false) accountId: Long?
     ): ResponseEntity<BudgetSummary> {
         val filter = BudgetSummaryFilter(dateFrom, dateTo, accountId)
-        val summary = summaryService.determineBudgetSummary(filter);
+        val summary = summaryService.determineBudgetSummary(filter)
         println(summary.toString())
         return ResponseEntity.ok(summary)
     }
 }
-

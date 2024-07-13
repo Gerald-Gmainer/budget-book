@@ -36,7 +36,6 @@ class AccountControllerTest : AuthIntegration() {
             jsonPath("$.iconName").value("cash-multiple")
             jsonPath("$.colorCode").value("#33FF57")
         }
-
     }
 
     @Test

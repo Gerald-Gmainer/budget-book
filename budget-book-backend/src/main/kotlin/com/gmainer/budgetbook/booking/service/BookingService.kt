@@ -21,7 +21,9 @@ class BookingService(
     }
 
     fun findById(id: Long): BookingResponse {
-        val booking = bookingRepository.findById(id).orElseThrow { NoSuchElementException("Booking not found with id $id") }
+        val booking = bookingRepository.findById(
+            id
+        ).orElseThrow { NoSuchElementException("Booking not found with id $id") }
         return booking.toResponse()
     }
 

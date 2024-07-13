@@ -6,13 +6,13 @@ style:
     FunctionOnlyReturningConstant:
         active: false
     MagicNumber:
-        excludes: [ '**/test/**', '**/integrationTest/**' ]
+        excludes: [ '**/test/**', '**/integrationTest/**', '**/testdata/**' ]
     VarCouldBeVal:
-        excludes: [ '**/test/**', '**/integrationTest/**' ]
+        excludes: [ '**/test/**', '**/integrationTest/**', '**/testdata/**' ]
 
 naming:
     FunctionNaming:
-        excludes: [ '**/integrationTest/**','**/test/**' ]
+        excludes: [ '**/integrationTest/**','**/test/**', '**/testdata/**' ]
 
 formatting:
     autoCorrect: true
@@ -21,23 +21,25 @@ formatting:
     NoWildcardImports:
         active: false
     MaximumLineLength:
-        maxLineLength: 180
-
-naming:
-    FunctionNaming:
-        excludes: [ '**/integrationTest/**','**/test/**' ]
+        maxLineLength: 220
 
 complexity:
     LargeClass:
-        excludes: [ '**/integrationTest/**','**/test/**' ]
+        excludes: [ '**/integrationTest/**','**/test/**', '**/testdata/**' ]
     LongParameterList:
         active: false
     LongMethod:
-        excludes: [ '**/integrationTest/**','**/test/**' ]
+        excludes: [ '**/integrationTest/**','**/test/**', '**/testdata/**' ]
     TooManyFunctions:
-        excludes: [ '**/integrationTest/**','**/test/**' ]
+        excludes: [ '**/integrationTest/**','**/test/**', '**/testdata/**' ]
         ignorePrivate: true
 
 potential-bugs:
     UnsafeCallOnNullableType:
-        excludes: [ '**/integrationTest/**','**/test/**' ]
+        excludes: [ '**/integrationTest/**','**/test/**', '**/testdata/**' ]
+
+exceptions:
+    TooGenericExceptionThrown:
+        active: false
+    TooGenericExceptionCaught:
+        active: false

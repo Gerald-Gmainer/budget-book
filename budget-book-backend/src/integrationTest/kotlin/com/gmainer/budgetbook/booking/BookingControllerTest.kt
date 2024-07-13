@@ -29,7 +29,10 @@ class BookingControllerTest : AuthIntegration() {
     @Test
     fun `should get booking by id`() {
         val auth = getUserAuthentication(TestUser.JoeMama)
-        val bookingId = jdbcTemplate.queryForObject("SELECT id FROM bookings WHERE description = 'Work'", Long::class.java)
+        val bookingId = jdbcTemplate.queryForObject(
+            "SELECT id FROM bookings WHERE description = 'Work'",
+            Long::class.java
+        )
 
         get("/bookings/$bookingId", auth.token).andExpect {
             status { isOk() }
@@ -51,7 +54,10 @@ class BookingControllerTest : AuthIntegration() {
             bookingDate = LocalDate.now(),
             description = "new booking",
             amount = BigDecimal("100.00"),
-            categoryId = jdbcTemplate.queryForObject("SELECT id FROM categories WHERE name = 'Food'", Long::class.java)!!,
+            categoryId = jdbcTemplate.queryForObject(
+                "SELECT id FROM categories WHERE name = 'Food'",
+                Long::class.java
+            )!!,
             accountId = jdbcTemplate.queryForObject("SELECT id FROM accounts WHERE name = 'Cash'", Long::class.java)!!
         )
 

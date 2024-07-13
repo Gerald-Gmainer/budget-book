@@ -6,7 +6,6 @@ import com.gmainer.budgetbook.booking.repository.BookingRepository
 import com.gmainer.budgetbook.category.model.Category
 import com.gmainer.budgetbook.category.model.CategoryType
 import com.gmainer.budgetbook.category.model.toResponse
-import com.gmainer.budgetbook.common.config.logger
 import com.gmainer.budgetbook.dashboard.dto.BudgetSummary
 import com.gmainer.budgetbook.dashboard.dto.BudgetSummaryFilter
 import com.gmainer.budgetbook.dashboard.dto.CategoryBookingOverview
@@ -15,7 +14,6 @@ import java.math.BigDecimal
 
 @Service
 class BudgetSummaryService(private val bookingRepository: BookingRepository) {
-    private val log by logger()
 
     fun determineBudgetSummary(filter: BudgetSummaryFilter): BudgetSummary {
         val bookings = fetchBookings(filter)

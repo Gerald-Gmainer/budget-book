@@ -84,8 +84,15 @@ class TestDataBookingService @Autowired constructor(
         return "Inserted ${bookings.size} rows into bookings table"
     }
 
-    private fun createBooking(date: String, amount: BigDecimal, categoryName: String, account: Account, description: String): Booking {
-        val category = categoryRepository.findByName(categoryName) ?: throw IllegalArgumentException("Category not found by name $categoryName")
+    private fun createBooking(
+        date: String,
+        amount: BigDecimal,
+        categoryName: String,
+        account: Account,
+        description: String
+    ): Booking {
+        val category = categoryRepository.findByName(categoryName)
+            ?: throw IllegalArgumentException("Category not found by name $categoryName")
 
         return Booking(
             bookingDate = LocalDate.parse(date),

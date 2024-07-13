@@ -43,37 +43,45 @@ class TestDataCategoryService(
 
     @Transactional
     fun insertTestChildrenCategories(): List<Category> {
-        val categories = mutableListOf<Category>()
+        val cs = mutableListOf<Category>()
 
-        categories.add(create("Groceries", CategoryType.OUTCOME, "food", "orange", "Food"))
-        categories.add(create("Enjoyment", CategoryType.OUTCOME, "music", "purple", "Food"))
-        categories.add(create("Eating Out", CategoryType.OUTCOME, "food", "peach", "Food"))
-        categories.add(create("Alcohol", CategoryType.OUTCOME, "water", "cyan", "Food"))
+        cs.add(create("Groceries", CategoryType.OUTCOME, "food", "orange", "Food"))
+        cs.add(create("Enjoyment", CategoryType.OUTCOME, "music", "purple", "Food"))
+        cs.add(create("Eating Out", CategoryType.OUTCOME, "food", "peach", "Food"))
+        cs.add(create("Alcohol", CategoryType.OUTCOME, "water", "cyan", "Food"))
 
-        categories.add(create("Rent", CategoryType.OUTCOME, "home", "red", "Housing"))
-        categories.add(create("Home Services", CategoryType.OUTCOME, "medical-bag", "lime_green", "Housing"))
-        categories.add(create("Furniture", CategoryType.OUTCOME, "shopping", "purple", "Housing"))
-        categories.add(create("Pet", CategoryType.OUTCOME, "umbrella", "orange", "Housing"))
-        categories.add(create("Household", CategoryType.OUTCOME, "lightbulb-outline", "blue", "Housing"))
+        cs.add(create("Rent", CategoryType.OUTCOME, "home", "red", "Housing"))
+        cs.add(create("Home Services", CategoryType.OUTCOME, "medical-bag", "lime_green", "Housing"))
+        cs.add(create("Furniture", CategoryType.OUTCOME, "shopping", "purple", "Housing"))
+        cs.add(create("Pet", CategoryType.OUTCOME, "umbrella", "orange", "Housing"))
+        cs.add(create("Household", CategoryType.OUTCOME, "lightbulb-outline", "blue", "Housing"))
 
-        categories.add(create("Daiku", CategoryType.OUTCOME, "briefcase", "red", "Personal"))
-        categories.add(create("Sport", CategoryType.OUTCOME, "basketball", "lime_green", "Personal"))
-        categories.add(create("Investment", CategoryType.OUTCOME, "ticket-account", "cyan", "Personal"))
-        categories.add(create("Entertainment", CategoryType.OUTCOME, "movie", "pink", "Personal"))
-        categories.add(create("Hygiene", CategoryType.OUTCOME, "medical-bag", "gray", "Personal"))
-        categories.add(create("Cloth", CategoryType.OUTCOME, "t-shirt-crew-outline", "purple", "Personal"))
+        cs.add(create("Daiku", CategoryType.OUTCOME, "briefcase", "red", "Personal"))
+        cs.add(create("Sport", CategoryType.OUTCOME, "basketball", "lime_green", "Personal"))
+        cs.add(create("Investment", CategoryType.OUTCOME, "ticket-account", "cyan", "Personal"))
+        cs.add(create("Entertainment", CategoryType.OUTCOME, "movie", "pink", "Personal"))
+        cs.add(create("Hygiene", CategoryType.OUTCOME, "medical-bag", "gray", "Personal"))
+        cs.add(create("Cloth", CategoryType.OUTCOME, "t-shirt-crew-outline", "purple", "Personal"))
 
-        categories.add(create("Car", CategoryType.OUTCOME, "car", "yellow", "Transport"))
-        categories.add(create("Public Transit", CategoryType.OUTCOME, "train", "teal", "Transport"))
+        cs.add(create("Car", CategoryType.OUTCOME, "car", "yellow", "Transport"))
+        cs.add(create("Public Transit", CategoryType.OUTCOME, "train", "teal", "Transport"))
 
-        categoryRepository.saveAll(categories)
+        categoryRepository.saveAll(cs)
 
-        return categories
+        return cs
     }
 
-    private fun create(name: String, type: CategoryType, iconName: String, colorName: String, parentName: String? = null): Category {
-        val icon = categoryIconRepository.findByName(iconName) ?: throw IllegalArgumentException("CategoryIcon not found")
-        val color = categoryColorRepository.findByName(colorName) ?: throw IllegalArgumentException("CategoryColor not found")
+    private fun create(
+        name: String,
+        type: CategoryType,
+        iconName: String,
+        colorName: String,
+        parentName: String? = null
+    ): Category {
+        val icon =
+            categoryIconRepository.findByName(iconName) ?: throw IllegalArgumentException("CategoryIcon not found")
+        val color =
+            categoryColorRepository.findByName(colorName) ?: throw IllegalArgumentException("CategoryColor not found")
         val parent: Category? = parentName?.let { categoryRepository.findByName(it) }
 
         return Category(

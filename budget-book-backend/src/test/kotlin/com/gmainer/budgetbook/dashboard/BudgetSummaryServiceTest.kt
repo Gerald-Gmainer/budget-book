@@ -26,21 +26,34 @@ class BudgetSummaryServiceTest {
 
     private val filterDateStart = LocalDate.of(2024, 5, 1)
     private val filterDateEnd = LocalDate.of(2024, 5, 30)
-    private final val accountIcon = AccountIcon(id = 1L, name = "icon", uiOrder = 1)
-    private final val accountColor = AccountColor(id = 1L, name = "Cash", code = "#000000", uiOrder = 1)
-    private final val categoryIcon = CategoryIcon(id = 1L, name = "icon", uiOrder = 1)
-    private final val categoryColor = CategoryColor(id = 1L, code = "#FF0000")
+    private val accountIcon = AccountIcon(id = 1L, name = "icon", uiOrder = 1)
+    private val accountColor = AccountColor(id = 1L, name = "Cash", code = "#000000", uiOrder = 1)
+    private val categoryIcon = CategoryIcon(id = 1L, name = "icon", uiOrder = 1)
+    private val categoryColor = CategoryColor(id = 1L, code = "#FF0000")
 
     val account = Account(id = 1L, name = "Checking", icon = accountIcon, color = accountColor)
-    val foodCategory = Category(id = 1L, name = "Food", icon = categoryIcon, color = categoryColor, categoryType = CategoryType.OUTCOME)
-    val salaryCategory = Category(id = 1L, name = "Salary", icon = categoryIcon, color = categoryColor, categoryType = CategoryType.INCOME)
+    val foodCategory = Category(
+        id = 1L,
+        name = "Food",
+        icon = categoryIcon,
+        color = categoryColor,
+        categoryType = CategoryType.OUTCOME
+    )
+    val salaryCategory = Category(
+        id = 1L,
+        name = "Salary",
+        icon = categoryIcon,
+        color = categoryColor,
+        categoryType = CategoryType.INCOME
+    )
 
-    /*
     @Test
     fun `should calculate empty bookings correctly`() {
-        Mockito.`when`(bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(listOf())
+        Mockito.`when`(
+            bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())
+        ).thenReturn(listOf())
 
-        val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd)
+        val filter = BudgetSummaryFilter(dateFrom = filterDateStart, dateTo = filterDateEnd)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
 
         assertEquals(BigDecimal(0), summary.income)
@@ -52,12 +65,35 @@ class BudgetSummaryServiceTest {
     @Test
     fun `should calculate income and outcome correctly`() {
         val bookings = listOf(
-            Booking(id = 1L, bookingDate = LocalDate.of(2024, 5, 1), amount = BigDecimal(100), description = "Work", category = salaryCategory, account = account),
-            Booking(id = 2L, bookingDate = LocalDate.of(2024, 5, 2), amount = BigDecimal(24.5), description = "Food 1", category = foodCategory, account = account),
-            Booking(id = 3L, bookingDate = LocalDate.of(2024, 5, 3), amount = BigDecimal(2), description = "Food 2", category = foodCategory, account = account)
+            Booking(
+                id = 1L,
+                bookingDate = LocalDate.of(2024, 5, 1),
+                amount = BigDecimal(100),
+                description = "Work",
+                category = salaryCategory,
+                account = account
+            ),
+            Booking(
+                id = 2L,
+                bookingDate = LocalDate.of(2024, 5, 2),
+                amount = BigDecimal(24.5),
+                description = "Food 1",
+                category = foodCategory,
+                account = account
+            ),
+            Booking(
+                id = 3L,
+                bookingDate = LocalDate.of(2024, 5, 3),
+                amount = BigDecimal(2),
+                description = "Food 2",
+                category = foodCategory,
+                account = account
+            )
         )
 
-        Mockito.`when`(bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(bookings)
+        Mockito.`when`(
+            bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())
+        ).thenReturn(bookings)
 
         val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
@@ -73,12 +109,39 @@ class BudgetSummaryServiceTest {
     @Test
     fun `should calculate with account ID`() {
         val bookings = listOf(
-            Booking(id = 1L, bookingDate = LocalDate.of(2024, 5, 1), amount = BigDecimal(100), description = "Work", category = salaryCategory, account = account),
-            Booking(id = 2L, bookingDate = LocalDate.of(2024, 5, 2), amount = BigDecimal(24.5), description = "Food 1", category = foodCategory, account = account),
-            Booking(id = 3L, bookingDate = LocalDate.of(2024, 5, 3), amount = BigDecimal(2), description = "Food 2", category = foodCategory, account = account)
+            Booking(
+                id = 1L,
+                bookingDate = LocalDate.of(2024, 5, 1),
+                amount = BigDecimal(100),
+                description = "Work",
+                category = salaryCategory,
+                account = account
+            ),
+            Booking(
+                id = 2L,
+                bookingDate = LocalDate.of(2024, 5, 2),
+                amount = BigDecimal(24.5),
+                description = "Food 1",
+                category = foodCategory,
+                account = account
+            ),
+            Booking(
+                id = 3L,
+                bookingDate = LocalDate.of(2024, 5, 3),
+                amount = BigDecimal(2),
+                description = "Food 2",
+                category = foodCategory,
+                account = account
+            )
         )
 
-        Mockito.`when`(bookingRepository.findByBookingDateBetweenAndAccountId(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyLong())).thenReturn(bookings)
+        Mockito.`when`(
+            bookingRepository.findByBookingDateBetweenAndAccountId(
+                MockitoHelper.anyObject(),
+                MockitoHelper.anyObject(),
+                MockitoHelper.anyLong()
+            )
+        ).thenReturn(bookings)
 
         val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd, 1L)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
@@ -89,21 +152,61 @@ class BudgetSummaryServiceTest {
         assertEquals(2, summary.overviews.size)
         assertEquals("Salary", summary.overviews[0].category.name)
         assertEquals("Food", summary.overviews[1].category.name)
-
     }
 
     @Test
     fun `should group parent categories correctly`() {
-        val groceriesCategory = Category(id = 4L, name = "Groceries", icon = categoryIcon, color = categoryColor, categoryType = CategoryType.OUTCOME, parent = foodCategory)
-
-        val bookings = listOf(
-            Booking(id = 1L, bookingDate = LocalDate.of(2024, 5, 1), amount = BigDecimal(100), description = "Work", category = salaryCategory, account = account),
-            Booking(id = 2L, bookingDate = LocalDate.of(2024, 5, 2), amount = BigDecimal(5), description = "Food 1", category = foodCategory, account = account),
-            Booking(id = 3L, bookingDate = LocalDate.of(2024, 5, 3), amount = BigDecimal(10), description = "Food 2", category = groceriesCategory, account = account),
-            Booking(id = 3L, bookingDate = LocalDate.of(2024, 5, 3), amount = BigDecimal(15), description = "Food 3", category = groceriesCategory, account = account)
+        val groceriesCategory = Category(
+            id = 4L,
+            name = "Groceries",
+            icon = categoryIcon,
+            color = categoryColor,
+            categoryType = CategoryType.OUTCOME,
+            parent = foodCategory
         )
 
-        Mockito.`when`(bookingRepository.findByBookingDateBetweenAndAccountId(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyLong())).thenReturn(bookings)
+        val bookings = listOf(
+            Booking(
+                id = 1L,
+                bookingDate = LocalDate.of(2024, 5, 1),
+                amount = BigDecimal(100),
+                description = "Work",
+                category = salaryCategory,
+                account = account
+            ),
+            Booking(
+                id = 2L,
+                bookingDate = LocalDate.of(2024, 5, 2),
+                amount = BigDecimal(5),
+                description = "Food 1",
+                category = foodCategory,
+                account = account
+            ),
+            Booking(
+                id = 3L,
+                bookingDate = LocalDate.of(2024, 5, 3),
+                amount = BigDecimal(10),
+                description = "Food 2",
+                category = groceriesCategory,
+                account = account
+            ),
+            Booking(
+                id = 4L,
+                bookingDate = LocalDate.of(2024, 5, 3),
+                amount = BigDecimal(15),
+                description = "Food 3",
+                category = groceriesCategory,
+                account = account
+            )
+        )
+
+        Mockito.`when`(
+            bookingRepository.findByBookingDateBetweenAndAccountId(
+                MockitoHelper.anyObject(),
+                MockitoHelper.anyObject(),
+                MockitoHelper.anyLong()
+            )
+        ).thenReturn(bookings)
 
         val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd, 1L)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
@@ -124,15 +227,49 @@ class BudgetSummaryServiceTest {
 
     @Test
     fun `should group children without parent categories correctly`() {
-        val groceriesCategory = Category(id = 4L, name = "Groceries", icon = categoryIcon, color = categoryColor, categoryType = CategoryType.OUTCOME, parent = foodCategory)
-
-        val bookings = listOf(
-            Booking(id = 1L, bookingDate = LocalDate.of(2024, 5, 1), amount = BigDecimal(100), description = "Work", category = salaryCategory, account = account),
-            Booking(id = 3L, bookingDate = LocalDate.of(2024, 5, 3), amount = BigDecimal(10), description = "Food 2", category = groceriesCategory, account = account),
-            Booking(id = 3L, bookingDate = LocalDate.of(2024, 5, 3), amount = BigDecimal(15), description = "Food 3", category = groceriesCategory, account = account)
+        val groceriesCategory = Category(
+            id = 4L,
+            name = "Groceries",
+            icon = categoryIcon,
+            color = categoryColor,
+            categoryType = CategoryType.OUTCOME,
+            parent = foodCategory
         )
 
-        Mockito.`when`(bookingRepository.findByBookingDateBetweenAndAccountId(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyLong())).thenReturn(bookings)
+        val bookings = listOf(
+            Booking(
+                id = 1L,
+                bookingDate = LocalDate.of(2024, 5, 1),
+                amount = BigDecimal(100),
+                description = "Work",
+                category = salaryCategory,
+                account = account
+            ),
+            Booking(
+                id = 3L,
+                bookingDate = LocalDate.of(2024, 5, 3),
+                amount = BigDecimal(10),
+                description = "Food 2",
+                category = groceriesCategory,
+                account = account
+            ),
+            Booking(
+                id = 4L,
+                bookingDate = LocalDate.of(2024, 5, 3),
+                amount = BigDecimal(15),
+                description = "Food 3",
+                category = groceriesCategory,
+                account = account
+            )
+        )
+
+        Mockito.`when`(
+            bookingRepository.findByBookingDateBetweenAndAccountId(
+                MockitoHelper.anyObject(),
+                MockitoHelper.anyObject(),
+                MockitoHelper.anyLong()
+            )
+        ).thenReturn(bookings)
 
         val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd, 1L)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
@@ -149,6 +286,4 @@ class BudgetSummaryServiceTest {
         assertEquals("Food 2", summary.overviews[1].children[0].bookings[0].description)
         assertEquals("Food 3", summary.overviews[1].children[0].bookings[1].description)
     }
-
-     */
 }

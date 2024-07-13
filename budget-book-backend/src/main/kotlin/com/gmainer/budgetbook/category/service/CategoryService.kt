@@ -13,8 +13,9 @@ class CategoryService(private val categoryRepository: CategoryRepository) {
     }
 
     fun findById(id: Long): CategoryResponse {
-        val category = categoryRepository.findById(id).orElseThrow { NoSuchElementException("Category not found with id $id") }
+        val category = categoryRepository.findById(
+            id
+        ).orElseThrow { NoSuchElementException("Category not found with id $id") }
         return category.toResponse()
     }
-
 }

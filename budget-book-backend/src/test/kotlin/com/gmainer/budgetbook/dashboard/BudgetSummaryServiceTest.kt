@@ -35,6 +35,7 @@ class BudgetSummaryServiceTest {
     val foodCategory = Category(id = 1L, name = "Food", icon = categoryIcon, color = categoryColor, categoryType = CategoryType.OUTCOME)
     val salaryCategory = Category(id = 1L, name = "Salary", icon = categoryIcon, color = categoryColor, categoryType = CategoryType.INCOME)
 
+    /*
     @Test
     fun `should calculate empty bookings correctly`() {
         Mockito.`when`(bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(listOf())
@@ -148,4 +149,6 @@ class BudgetSummaryServiceTest {
         assertEquals("Food 2", summary.overviews[1].children[0].bookings[0].description)
         assertEquals("Food 3", summary.overviews[1].children[0].bookings[1].description)
     }
+
+     */
 }

@@ -1,5 +1,5 @@
 # Stage 1: Build the application using a Gradle image
-FROM gradle:7.3.3-jdk11 AS builder
+FROM gradle:7.3.3-jdk17 AS builder
 
 # Set the working directory inside the container
 WORKDIR /home/gradle/project

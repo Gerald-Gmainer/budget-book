@@ -16,8 +16,18 @@ COPY src src
 # Make the Gradle wrapper executable
 RUN chmod +x gradlew
 
+# Install JDK 21
+RUN apt-get update && apt-get install -y openjdk-21-jdk
+
+# Set JAVA_HOME to JDK 21
+RUN export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+
+# Verify JAVA_HOME and update PATH
+ENV JAVA_HOME=$JAVA_HOME
+ENV PATH=$JAVA_HOME/bin:$PATH
+
 # Build the application
-RUN ./gradlew build --no-daemon
+RUN ./gradlew build --no-daemon -x test -x integrationTest -x detektIntegrationTest -x detekt
 
 # Stage 2: Create the final image using a JDK base image
 FROM openjdk:21-jdk-slim

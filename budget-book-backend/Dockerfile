@@ -7,7 +7,7 @@ WORKDIR /home/gradle/project
 # Copy the Gradle wrapper and build files
 COPY gradlew gradlew
 COPY build.gradle.kts build.gradle.kts
-COPY settings.gradle.kts settings.gradle.kts
+#COPY settings.gradle.kts settings.gradle.kts
 COPY gradle gradle
 
 # Copy the application source code

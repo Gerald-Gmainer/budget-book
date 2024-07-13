@@ -46,15 +46,19 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Build with Gradle
+        working-directory: budget-book-backend
         run: ./gradlew build
 
       - name: Run Unit Tests
+        working-directory: budget-book-backend
         run: ./gradlew test
 
       - name: Run Integration Tests
+        working-directory: budget-book-backend
         run: ./gradlew integrationTest
 
       - name: Build Docker Image
+        working-directory: budget-book-backend
         run: docker build -t budgetbook-backend .
 
       - name: Log in to Docker Hub
@@ -64,4 +68,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker Image
+        working-directory: budget-book-backend
         run: docker push ${{ secrets.DOCKER_USERNAME }}/budgetbook-backend:latest

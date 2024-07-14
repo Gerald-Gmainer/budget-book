@@ -69,4 +69,5 @@ jobs:
 
       - name: Push Docker Image
         working-directory: budget-book-backend
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest
+        # run: docker push ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest
+        run: docker push budget-book-backend:latest

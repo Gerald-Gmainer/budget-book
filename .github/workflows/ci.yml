@@ -47,11 +47,7 @@ jobs:
 
       - name: Build with Gradle
         working-directory: budget-book-backend
-        run: ./gradlew build -x test -x integrationTest -x detektIntegrationTest -x detekt
-
-      - name: Run Detekt
-        working-directory: budget-book-backend
-        run: ./gradlew detekt
+        run: ./gradlew build -x test -x integrationTest -x detektIntegrationTest
 
       - name: Run Unit Tests
         working-directory: budget-book-backend
@@ -67,15 +63,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Create Docker Buildx builder
-        run: docker buildx create --use
-
-      - name: Build Docker Image
+      - name: Build and Push Docker Image
         working-directory: budget-book-backend
-        run: docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest .
-        
-      - name: Tag Docker Image
-        run: docker tag budget-book-backend:latest ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest
-
-      - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest --push .

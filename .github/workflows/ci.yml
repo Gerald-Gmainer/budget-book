@@ -68,3 +68,43 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/budget-book-backend:latest --push .
+
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node
+
+      - name: Install dependencies
+        working-directory: budget-book-frontend
+        run: npm install
+
+      - name: Build the frontend
+        working-directory: budget-book-frontend
+        run: npm run build
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and Push Docker Image
+        working-directory: budget-book-frontend
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKER_USERNAME }}/budget-book-frontend:latest --push .

@@ -1,7 +1,9 @@
+import AccountDropdown from "./components/AccountDropdown";
+
 const ReportGraph = () => {
 
     return (
-        <div>asdf</div>
+        <AccountDropdown/>
     )
 }
 

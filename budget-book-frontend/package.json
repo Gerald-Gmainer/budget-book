@@ -8,6 +8,7 @@
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-react": "^2.3.0",
     "@coreui/react": "^5.1.0",
+    "@coreui/react-chartjs": "^3.0.0",
     "@coreui/utils": "^2.0.2",
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.17.0",

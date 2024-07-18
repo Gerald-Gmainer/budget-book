@@ -16,7 +16,7 @@ const DateFilter = () => {
                     active={selectedDateFilter === filter}
                     onClick={() => changeDateFilter(filter)}
                 >
-                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                    {filter}
                 </CButton>
             ))}
         </CButtonGroup>

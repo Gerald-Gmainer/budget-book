@@ -21,19 +21,26 @@ interface CategoryGraphProps {
 
 const CategoryGraph: React.FC<CategoryGraphProps> = ({data}) => {
     const parentOverviews = data.overviews;
+    const nonParentOverviews = data.overviews.filter(overview => overview.children.length === 0);
 
-    // Filter child overviews (exclude overviews that have children)
-    const childOverviews = data.overviews.flatMap(overview =>
-        overview.children.length > 0 ? overview.children : [overview]
-    ).filter(overview => overview.children.length === 0);
+    const childOverviews = parentOverviews.flatMap(overview => overview.children);
 
     const parentLabels = parentOverviews.map(overview => overview.category.name);
     const parentData = parentOverviews.map(overview => overview.amount);
     const parentColors = parentOverviews.map(overview => overview.category.colorCode);
 
-    const childLabels = childOverviews.map(overview => overview.category.name);
-    const childData = childOverviews.map(overview => overview.amount);
-    const childColors = childOverviews.map(overview => overview.category.colorCode);
+    const childLabels = [
+        ...childOverviews.map(overview => overview.category.name),
+        ...nonParentOverviews.map(overview => overview.category.name)
+    ];
+    const childData = [
+        ...childOverviews.map(overview => overview.amount),
+        ...nonParentOverviews.map(overview => overview.amount)
+    ];
+    const childColors = [
+        ...childOverviews.map(overview => overview.category.colorCode),
+        ...nonParentOverviews.map(overview => overview.category.colorCode)
+    ];
 
     const totalParentAmount = parentOverviews.reduce((sum, overview) => sum + overview.amount, 0);
     const totalChildAmount = childOverviews.reduce((sum, overview) => sum + overview.amount, 0);
@@ -44,17 +51,24 @@ const CategoryGraph: React.FC<CategoryGraphProps> = ({data}) => {
         labels: [...parentLabels, ...childLabels],
         datasets: [
             {
+                label: 'Parent Categories',
                 data: parentData,
                 backgroundColor: parentColors,
                 hoverBackgroundColor: parentColors,
-                borderColor: ["#000"]
+                borderColor: parentColors,
+                hoverBorderColor: parentColors,
+                borderWidth: 0,
+                cutout: '60%',
             },
             {
+                label: 'Child Categories',
                 data: childData,
                 backgroundColor: childColors,
                 hoverBackgroundColor: childColors,
-                weight: 1,
-                borderColor: ["#000"]
+                borderColor: childColors,
+                hoverBorderColor: childColors,
+                borderWidth: 0,
+                weight: 1.5,
             },
         ],
     };

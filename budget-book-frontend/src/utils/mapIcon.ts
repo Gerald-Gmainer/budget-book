@@ -1,0 +1,76 @@
+import {
+    AccountCircle,
+    AirplanemodeActive,
+    AttachMoney,
+    Book,
+    BusinessCenter,
+    CameraAlt,
+    CardGiftcard,
+    CardMembership,
+    CreditCard,
+    DirectionsCar,
+    Fastfood,
+    Home,
+    Lightbulb,
+    LocalHospital,
+    LocalMall,
+    MoreHoriz,
+    Movie,
+    MusicNote,
+    Opacity,
+    Palette,
+    Phone,
+    Rocket,
+    School,
+    ShoppingCart,
+    SportsBasketball,
+    SvgIconComponent,
+    Train,
+    Umbrella,
+    Watch,
+} from '@mui/icons-material';
+
+const icons = {
+    account: AccountCircle,
+    airplane: AirplanemodeActive,
+    book: Book,
+    car: DirectionsCar,
+    'cash-multiple': AttachMoney,
+    'credit-card': CreditCard,
+    food: Fastfood,
+    gift: CardGiftcard,
+    home: Home,
+    'lightbulb-outline': Lightbulb,
+    movie: Movie,
+    music: MusicNote,
+    phone: Phone,
+    rocket: Rocket,
+    school: School,
+    shopping: ShoppingCart,
+    train: Train,
+    umbrella: Umbrella,
+    'wallet-giftcard': CardGiftcard,
+    water: Opacity,
+    'wallet-membership': CardMembership,
+    'umbrella-outline': Umbrella,
+    'ticket-account': AccountCircle,
+    'shopping-music': MusicNote,
+    dots: MoreHoriz,
+    briefcase: BusinessCenter,
+    camera: CameraAlt,
+    guitar: MusicNote, // No direct guitar icon, using music note as a placeholder
+    'medical-bag': LocalHospital,
+    't-shirt-crew-outline': LocalMall,
+    'food-apple': Fastfood, // No direct apple icon, using fastfood as a placeholder
+    palette: Palette,
+    watch: Watch,
+    'train-car': Train,
+    basketball: SportsBasketball,
+};
+
+const mapIcon = (iconName: string): SvgIconComponent => {
+    // @ts-ignore
+    return icons[iconName] || MoreHoriz;
+};
+
+export {mapIcon};

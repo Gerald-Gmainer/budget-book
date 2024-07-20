@@ -1,9 +1,8 @@
-package com.gmainer.budgetbook.dashboard.dto
+package com.gmainer.budgetbook.categorybooking.dto
 
 import java.math.BigDecimal
 
 data class BudgetSummary(
-    val filter: BudgetSummaryFilter,
     val income: BigDecimal,
     val outcome: BigDecimal,
     val balance: BigDecimal,

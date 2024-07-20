@@ -3,11 +3,13 @@ package com.gmainer.budgetbook.account.controller
 import com.gmainer.budgetbook.account.dto.AccountResponse
 import com.gmainer.budgetbook.account.service.AccountService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/accounts")
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge = 3600, allowCredentials = "true")
 class AccountController(private val accountService: AccountService) {
 
     @GetMapping

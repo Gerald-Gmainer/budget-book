@@ -1,10 +1,10 @@
-package com.gmainer.budgetbook.dashboard
+package com.gmainer.budgetbook.categorybooking
 
 import com.gmainer.budgetbook.BaseIntegration
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class DashboardControllerTest : BaseIntegration() {
+class CategoryBookingControllerTest : BaseIntegration() {
     /*
     @Autowired
     private lateinit var jdbcTemplate: JdbcTemplate

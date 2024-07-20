@@ -17,7 +17,7 @@ class BookingService(
 ) {
 
     fun getAllBookings(): List<BookingResponse> {
-        return bookingRepository.findAll().map { it.toResponse() }
+        return bookingRepository.findAllByOrderByBookingDateAsc().map { it.toResponse() }
     }
 
     fun findById(id: Long): BookingResponse {

@@ -9,8 +9,8 @@ import com.gmainer.budgetbook.category.model.Category
 import com.gmainer.budgetbook.category.model.CategoryColor
 import com.gmainer.budgetbook.category.model.CategoryIcon
 import com.gmainer.budgetbook.category.model.CategoryType
-import com.gmainer.budgetbook.dashboard.dto.BudgetSummaryFilter
-import com.gmainer.budgetbook.dashboard.service.BudgetSummaryService
+import com.gmainer.budgetbook.categorybooking.dto.BudgetSummaryFilter
+import com.gmainer.budgetbook.categorybooking.service.BudgetSummaryService
 import com.gmainer.budgetbook.testhelper.MockitoHelper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

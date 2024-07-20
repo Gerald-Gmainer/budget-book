@@ -1,4 +1,4 @@
-package com.gmainer.budgetbook.dashboard.dto
+package com.gmainer.budgetbook.categorybooking.dto
 
 import java.time.LocalDate
 

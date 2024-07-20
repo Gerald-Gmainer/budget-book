@@ -1,14 +1,13 @@
-package com.gmainer.budgetbook.dashboard.service
+package com.gmainer.budgetbook.categorybooking.service
 
 import com.gmainer.budgetbook.booking.model.Booking
-import com.gmainer.budgetbook.booking.model.toResponse
 import com.gmainer.budgetbook.booking.repository.BookingRepository
 import com.gmainer.budgetbook.category.model.Category
 import com.gmainer.budgetbook.category.model.CategoryType
 import com.gmainer.budgetbook.category.model.toResponse
-import com.gmainer.budgetbook.dashboard.dto.BudgetSummary
-import com.gmainer.budgetbook.dashboard.dto.BudgetSummaryFilter
-import com.gmainer.budgetbook.dashboard.dto.CategoryBookingOverview
+import com.gmainer.budgetbook.categorybooking.dto.BudgetSummary
+import com.gmainer.budgetbook.categorybooking.dto.BudgetSummaryFilter
+import com.gmainer.budgetbook.categorybooking.dto.CategoryBookingOverview
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -23,7 +22,6 @@ class BudgetSummaryService(private val bookingRepository: BookingRepository) {
         val balance = income - outcome
 
         return BudgetSummary(
-            filter = filter,
             income = income,
             outcome = outcome,
             balance = balance,
@@ -52,8 +50,9 @@ class BudgetSummaryService(private val bookingRepository: BookingRepository) {
         val overviews = rootCategories.map { rootCategory ->
             buildCategoryOverview(rootCategory, bookings)
         }
-
         return overviews.filter { it.amount > BigDecimal.ZERO || it.children.isNotEmpty() }
+            .sortedWith(compareByDescending<CategoryBookingOverview> { it.category.type == CategoryType.INCOME }
+                .thenByDescending { it.amount })
     }
 
     private fun getParentCategories(category: Category): List<Category> {
@@ -69,19 +68,26 @@ class BudgetSummaryService(private val bookingRepository: BookingRepository) {
     private fun buildCategoryOverview(category: Category, allBookings: List<Booking>): CategoryBookingOverview {
         val directBookings = allBookings.filter { it.category == category }
         val childCategories = allBookings.map { it.category }.filter { it.parent == category }.distinct()
-
         val childOverviews = childCategories.map { childCategory ->
             buildCategoryOverview(childCategory, allBookings)
-        }
-
-        val totalAmount = directBookings.sumOf { it.amount } + childOverviews.sumOf { it.amount }
+        }.sortedByDescending { it.amount }
+        val amount = directBookings.sumOf { it.amount } + childOverviews.sumOf { it.amount }
+        val percentage = calculatePercentage(category, allBookings, amount.toDouble())
 
         return CategoryBookingOverview(
             category = category.toResponse(),
-            categoryType = category.categoryType,
-            bookings = directBookings.map { it.toResponse() },
-            amount = totalAmount,
+            amount,
+            percentage,
             children = childOverviews
         )
+    }
+
+    private fun calculatePercentage(category: Category, allBookings: List<Booking>, categoryAmount: Double): Double {
+        val totalAmount = when (category.categoryType) {
+            CategoryType.INCOME -> allBookings.filter { it.category.categoryType == CategoryType.INCOME }.sumOf { it.amount }
+            CategoryType.OUTCOME -> allBookings.filter { it.category.categoryType == CategoryType.OUTCOME }.sumOf { it.amount }
+        }.toDouble()
+
+        return if (totalAmount > 0) (categoryAmount / totalAmount) * 100 else 0.0
     }
 }

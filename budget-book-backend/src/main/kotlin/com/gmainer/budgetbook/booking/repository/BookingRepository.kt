@@ -7,6 +7,7 @@ import java.time.LocalDate
 
 @Repository
 interface BookingRepository : JpaRepository<Booking, Long> {
+    fun findAllByOrderByBookingDateAsc(): List<Booking>
     fun findByBookingDateBetween(dateFrom: LocalDate, dateTo: LocalDate): List<Booking>
     fun findByBookingDateBetweenAndAccountId(dateFrom: LocalDate, dateTo: LocalDate, accountId: Long): List<Booking>
 }

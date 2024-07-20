@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {CButton, CCard, CCardBody, CCollapse} from '@coreui/react';
 import {CIcon} from '@coreui/icons-react';
 import {cilBasket, cilChevronBottom, cilChevronRight, cilFastfood, cilHome, cilRestaurant, cilSpreadsheet, cilStar} from '@coreui/icons';
-import './CategoryBookings.css';
+import './CategoryBookings.scss';
 
 const bookingsData = [
     {

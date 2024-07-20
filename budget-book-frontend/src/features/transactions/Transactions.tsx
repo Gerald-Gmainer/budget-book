@@ -15,6 +15,7 @@ const Transactions = () => {
     const dispatch: AppDispatch = useDispatch();
     const {data: summaryData, status: summaryStatus, error: summaryError} = useSelector((state: RootState) => state.budgetSummary);
     const {selectedDateFilter, from, to} = useSelector((state: RootState) => state.dateFilter);
+    const {selectedCategoryTypeFilter} = useSelector((state: RootState) => state.categoryTypeFilter);
 
     useEffect(() => {
         dispatch(fetchBudgetSummaryData({from, to}));
@@ -28,6 +29,10 @@ const Transactions = () => {
         return <div>Error: {summaryError}</div>;
     }
 
+    const filteredOverviews = summaryData?.overviews.filter(overview =>
+        overview.category.type === selectedCategoryTypeFilter
+    ) || [];
+
     return (
         <div className="report-graph-container container">
             <div className="report-graph-header">
@@ -40,7 +45,7 @@ const Transactions = () => {
             <div className="row">
                 <div className="col-md-5">
                     {summaryData && <BudgetOverview data={summaryData}/>}
-                    {summaryData && <CategoryGraph data={summaryData}/>}
+                    <CategoryGraph data={{overviews: filteredOverviews}}/>
                 </div>
                 <div className="col-md-7">
                     <CategoryBookings/>

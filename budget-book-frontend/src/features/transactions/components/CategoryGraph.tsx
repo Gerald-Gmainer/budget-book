@@ -1,34 +1,9 @@
 import React from 'react';
 import {CCard, CCardBody} from "@coreui/react";
 import {CChartDoughnut} from '@coreui/react-chartjs';
-import {cilBasket, cilFastfood, cilHome, cilRestaurant, cilSpreadsheet, cilStar} from '@coreui/icons';
 import CategoryBookingOverviewItem from "./CategoryBookingOverviewItem";
-import {BudgetSummary} from "../../../types/budgetSummary";
-
-const data2 = {
-    labels: ['Food', 'House', 'Eating Out', 'Household', 'Cloth', 'Other'],
-    datasets: [
-        {
-            data: [500, 1000, 300, 150, 200, 100], // Test data values for each category
-            backgroundColor: [
-                '#36A2EB',
-                '#FF6384',
-                '#FFCE56',
-                '#4BC0C0',
-                '#9966FF',
-                '#FF9F40'
-            ], // Colors for each section
-            hoverBackgroundColor: [
-                '#36A2EB',
-                '#FF6384',
-                '#FFCE56',
-                '#4BC0C0',
-                '#9966FF',
-                '#FF9F40'
-            ],
-        },
-    ],
-};
+import "./CategoryGraph.scss"
+import {CategoryBookingOverview} from "../../../types/categoryBookingOverview";
 
 const options = {
     responsive: true,
@@ -40,19 +15,34 @@ const options = {
     },
 };
 
-const icons = [cilFastfood, cilHome, cilRestaurant, cilBasket, cilSpreadsheet, cilStar];
-const totalSum = data2.datasets[0].data.reduce((a, b) => a + b, 0);
-
 interface CategoryGraphProps {
-    data: BudgetSummary;
+    data: { overviews: CategoryBookingOverview[] };
 }
 
 const CategoryGraph: React.FC<CategoryGraphProps> = ({data}) => {
+    const filteredOverviews = data.overviews.flatMap(overview =>
+        overview.children.length > 0 ? overview.children : [overview]
+    );
+    const labels = filteredOverviews.map(overview => overview.category.name);
+    const chartData = filteredOverviews.map(overview => overview.amount);
+    const backgroundColors = filteredOverviews.map(overview => overview.category.colorCode);
+
+    const doughnutData = {
+        labels: labels,
+        datasets: [
+            {
+                data: chartData,
+                backgroundColor: backgroundColors,
+                hoverBackgroundColor: backgroundColors,
+            },
+        ],
+    };
+
     return (
         <CCard className="mb-3">
             <CCardBody>
-                <div className="chart-wrapper" style={{position: 'relative', height: '250px', width: '250px', margin: 'auto'}}>
-                    <CChartDoughnut data={data2} options={options}/>
+                <div className="chart-wrapper">
+                    <CChartDoughnut data={doughnutData} options={options}/>
                 </div>
 
                 <ul className="category-list" style={{listStyle: 'none', padding: 0}}>

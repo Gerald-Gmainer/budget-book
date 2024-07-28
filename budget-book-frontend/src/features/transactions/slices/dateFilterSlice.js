@@ -1,17 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
-import DateFilterEnum from "../../../constants/dateFilterEnum";
-import {endOfMonth, format, startOfMonth} from 'date-fns';
+import PeriodEnum from "../../../constants/periodEnum";
+import {format, startOfMonth} from 'date-fns';
 
 const dateFilterSlice = createSlice({
     name: 'dateFilter',
     initialState: {
-        selectedDateFilter: DateFilterEnum.MONTH,
-        from: format(startOfMonth(new Date()), 'yyyyMMdd'),
-        to: format(endOfMonth(new Date()), 'yyyyMMdd')
+        period: PeriodEnum.MONTH,
+        date: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
     },
     reducers: {
-        setDateFilter: (state, action) => {
-            state.selectedDateFilter = action.payload;
+        setPeriod: (state, action) => {
+            state.period = action.payload;
         },
     },
 });

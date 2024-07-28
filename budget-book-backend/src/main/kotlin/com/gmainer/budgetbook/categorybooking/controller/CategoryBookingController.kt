@@ -1,8 +1,10 @@
 package com.gmainer.budgetbook.categorybooking.controller
 
 import com.gmainer.budgetbook.categorybooking.dto.BudgetSummary
-import com.gmainer.budgetbook.categorybooking.dto.BudgetSummaryFilter
+import com.gmainer.budgetbook.categorybooking.dto.CategoryBookingResponse
 import com.gmainer.budgetbook.categorybooking.service.BudgetSummaryService
+import com.gmainer.budgetbook.categorybooking.service.CategoryBookingService
+import com.gmainer.budgetbook.common.model.BookingFilter
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -10,18 +12,37 @@ import java.time.LocalDate
 
 @RestController
 @RequestMapping("/category-bookings")
-class CategoryBookingController(private val summaryService: BudgetSummaryService) {
+class CategoryBookingController(private val summaryService: BudgetSummaryService, private val categoryBookingService: CategoryBookingService) {
 
     // With account ID filter: /category-bookings/summary/20240501/20240530?accountId=1
     // Without account ID filter: /category-bookings/summary/20240501/20240530
-    @GetMapping("summary/{dateFrom}/{dateTo}")
+    @GetMapping("summary/{period}/{date}")
     fun getBudgetSummary(
-        @PathVariable @DateTimeFormat(pattern = "yyyyMMdd") dateFrom: LocalDate,
-        @PathVariable @DateTimeFormat(pattern = "yyyyMMdd") dateTo: LocalDate,
+        @PathVariable period: String,
+        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date: LocalDate,
         @RequestParam(required = false) accountId: Long?
     ): ResponseEntity<BudgetSummary> {
-        val filter = BudgetSummaryFilter(dateFrom, dateTo, accountId)
+        val filter = BookingFilter(period, date, accountId)
         val summary = summaryService.determineBudgetSummary(filter)
         return ResponseEntity.ok(summary)
     }
+
+    @GetMapping("{period}/{date}")
+    fun getCategoryBookings(
+        @PathVariable period: String,
+        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) date: LocalDate,
+        @RequestParam(required = false) accountId: Long?
+    ): ResponseEntity<List<CategoryBookingResponse>> {
+        val filter = BookingFilter(period, date, accountId)
+        val bookings = categoryBookingService.determineCategoryBookings(filter)
+        return ResponseEntity.ok(bookings)
+    }
 }
+
+// TODO
+// FE lädt getCategoryBookings
+// FE dateFilter erweitern mit datepicker
+// left/right button wären auch super
+// FE braucht group by category toggle. default on
+// wenn group by button aus, category-bookings in FE umformatieren
+// was in react store speichern?

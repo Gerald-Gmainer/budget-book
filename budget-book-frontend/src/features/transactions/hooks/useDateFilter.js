@@ -3,7 +3,7 @@ import {setDateFilter} from '../slices/dateFilterSlice';
 
 const useDateFilter = () => {
     const dispatch = useDispatch();
-    const selectedDateFilter = useSelector((state) => state.dateFilter.selectedDateFilter);
+    const selectedDateFilter = useSelector((state) => state.dateFilter.period);
 
     const changeDateFilter = (dateFilter) => {
         dispatch(setDateFilter(dateFilter));

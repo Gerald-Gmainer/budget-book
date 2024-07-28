@@ -7,6 +7,7 @@ import com.gmainer.budgetbook.booking.model.toEntity
 import com.gmainer.budgetbook.booking.model.toResponse
 import com.gmainer.budgetbook.booking.repository.BookingRepository
 import com.gmainer.budgetbook.category.repository.CategoryRepository
+import com.gmainer.budgetbook.common.model.BookingFilter
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,17 +22,18 @@ class BookingService(
     }
 
     fun findById(id: Long): BookingResponse {
-        val booking = bookingRepository.findById(
-            id
-        ).orElseThrow { NoSuchElementException("Booking not found with id $id") }
+        val booking = bookingRepository.findById(id).orElseThrow { NoSuchElementException("Booking not found with id $id") }
         return booking.toResponse()
     }
 
+    fun getBookingsByFilter(filter: BookingFilter): List<BookingResponse> {
+        // TODO filter by account
+        return bookingRepository.findByBookingDateBetweenOrderByBookingDateDesc(filter.dateFrom, filter.dateTo).map { it.toResponse() }
+    }
+
     fun createBooking(bookingDto: BookingCreateRequest): BookingResponse {
-        val category = categoryRepository.findById(bookingDto.categoryId)
-            .orElseThrow { IllegalArgumentException("Category not found") }
-        val account = accountRepository.findById(bookingDto.accountId)
-            .orElseThrow { IllegalArgumentException("Account not found") }
+        val category = categoryRepository.findById(bookingDto.categoryId).orElseThrow { IllegalArgumentException("Category not found") }
+        val account = accountRepository.findById(bookingDto.accountId).orElseThrow { IllegalArgumentException("Account not found") }
         val booking = bookingDto.toEntity(category, account)
         return bookingRepository.save(booking).toResponse()
     }

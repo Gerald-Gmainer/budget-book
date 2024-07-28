@@ -1,5 +1,7 @@
 package com.gmainer.budgetbook.booking.dto
 
+import com.gmainer.budgetbook.account.dto.AccountResponse
+import com.gmainer.budgetbook.category.dto.CategoryResponse
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -8,8 +10,6 @@ data class BookingResponse(
     val bookingDate: LocalDate,
     val amount: BigDecimal,
     val description: String?,
-    val categoryId: Long,
-    val categoryName: String,
-    val accountId: Long,
-    val accountName: String,
+    val category: CategoryResponse,
+    val account: AccountResponse,
 )

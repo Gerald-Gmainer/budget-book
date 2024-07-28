@@ -3,7 +3,7 @@ import {CCard, CCardBody} from "@coreui/react";
 import {CChartDoughnut} from '@coreui/react-chartjs';
 import CategoryBookingOverviewItem from "./CategoryBookingOverviewItem";
 import "./CategoryGraph.scss";
-import {CategoryBookingOverview} from "../../../types/categoryBookingOverview";
+import {CategoryBookingOverview} from "../../../types";
 
 const options = {
     responsive: true,
@@ -16,37 +16,21 @@ const options = {
 };
 
 interface CategoryGraphProps {
-    data: { overviews: CategoryBookingOverview[] };
+    data: CategoryBookingOverview[];
 }
 
 const CategoryGraph: React.FC<CategoryGraphProps> = ({data}) => {
-    const parentOverviews = data.overviews;
-    const nonParentOverviews = data.overviews.filter(overview => overview.children.length === 0);
-
-    const childOverviews = parentOverviews.flatMap(overview => overview.children);
+    const parentOverviews = data;
+    const childOverviews = [...data.filter(overview => overview.children.length === 0), ...parentOverviews.flatMap(overview => overview.children)];
 
     const parentLabels = parentOverviews.map(overview => overview.category.name);
     const parentData = parentOverviews.map(overview => overview.amount);
     const parentColors = parentOverviews.map(overview => overview.category.colorCode);
 
-    const childLabels = [
-        ...childOverviews.map(overview => overview.category.name),
-        ...nonParentOverviews.map(overview => overview.category.name)
-    ];
-    const childData = [
-        ...childOverviews.map(overview => overview.amount),
-        ...nonParentOverviews.map(overview => overview.amount)
-    ];
-    const childColors = [
-        ...childOverviews.map(overview => overview.category.colorCode),
-        ...nonParentOverviews.map(overview => overview.category.colorCode)
-    ];
+    const childLabels = childOverviews.map(overview => overview.category.name)
+    const childData = childOverviews.map(overview => overview.amount)
+    const childColors = childOverviews.map(overview => overview.category.colorCode)
 
-    const totalParentAmount = parentOverviews.reduce((sum, overview) => sum + overview.amount, 0);
-    const totalChildAmount = childOverviews.reduce((sum, overview) => sum + overview.amount, 0);
-
-    console.log(totalParentAmount, parentData);
-    console.log(totalChildAmount, childData);
     const doughnutData = {
         labels: [...parentLabels, ...childLabels],
         datasets: [
@@ -81,7 +65,7 @@ const CategoryGraph: React.FC<CategoryGraphProps> = ({data}) => {
                 </div>
 
                 <ul className="category-list" style={{listStyle: 'none', padding: 0}}>
-                    {data.overviews.map((overview, index) => (
+                    {data.map((overview, index) => (
                         <CategoryBookingOverviewItem key={index} overview={overview}/>
                     ))}
                 </ul>

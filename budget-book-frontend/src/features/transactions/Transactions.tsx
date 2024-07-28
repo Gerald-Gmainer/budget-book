@@ -1,25 +1,32 @@
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import AccountDropdown from "./components/AccountDropdown";
 import DateFilter from "./components/DateFilter";
 import CreateButton from "./components/CreateButton";
 import BudgetOverview from "./components/BudgetOverview";
 import CategoryGraph from "./components/CategoryGraph";
-import CategoryBookings from "./components/CategoryBookings";
+import BookingList from "./components/BookingList";
 import CategoryTypeFilter from "./components/CategoryTypeFilter";
-import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {fetchBudgetSummaryData} from './slices/budgetSummarySlice';
+import {fetchBudgetSummary} from './slices/budgetSummarySlice';
+import {fetchCategoryBookings} from "./slices/bookingsSlice";
 import './Transactions.scss';
 import {AppDispatch, RootState} from "../../app/store";
+import ListView from "./components/ListView";
 
 const Transactions = () => {
     const dispatch: AppDispatch = useDispatch();
-    const {data: summaryData, status: summaryStatus, error: summaryError} = useSelector((state: RootState) => state.budgetSummary);
-    const {selectedDateFilter, from, to} = useSelector((state: RootState) => state.dateFilter);
+    const {period, date} = useSelector((state: RootState) => state.dateFilter);
     const {selectedCategoryTypeFilter} = useSelector((state: RootState) => state.categoryTypeFilter);
 
+    const {data: summaryData, status: summaryStatus, error: summaryError} = useSelector((state: RootState) => state.budgetSummary);
+    const {data: bookingsData, status: bookingsStatus, error: bookingsError} = useSelector((state: RootState) => state.bookings);
+
+    const [groupByCategory, setGroupByCategory] = useState(false); // State for the ListView toggle
+
     useEffect(() => {
-        dispatch(fetchBudgetSummaryData({from, to}));
-    }, [selectedDateFilter]);
+        dispatch(fetchBudgetSummary({date}));
+        dispatch(fetchCategoryBookings({date}));
+    }, [period]);
 
     if (summaryStatus === 'loading') {
         return <div>Loading...</div>;
@@ -33,22 +40,32 @@ const Transactions = () => {
         overview.category.type === selectedCategoryTypeFilter
     ) || [];
 
+    const filteredBookings = bookingsData?.filter(overview =>
+        overview.category.type === selectedCategoryTypeFilter
+    ) || [];
+
+    console.log(filteredBookings);
+
     return (
-        <div className="report-graph-container container">
-            <div className="report-graph-header">
+        <div className="transactions-container container">
+            <div className="transactions-header">
                 <AccountDropdown/>
-                <DateFilter/>
                 <CategoryTypeFilter/>
+                <ListView groupByCategory={groupByCategory} setGroupByCategory={setGroupByCategory}/>
                 <CreateButton className="create-button"/>
+            </div>
+
+            <div className="transactions-header">
+                <DateFilter/>
             </div>
 
             <div className="row">
                 <div className="col-md-5">
                     {summaryData && <BudgetOverview data={summaryData}/>}
-                    <CategoryGraph data={{overviews: filteredOverviews}}/>
+                    <CategoryGraph data={filteredOverviews}/>
                 </div>
                 <div className="col-md-7">
-                    <CategoryBookings/>
+                    <BookingList data={filteredBookings}/>
                 </div>
             </div>
         </div>

@@ -6,15 +6,15 @@ import com.gmainer.budgetbook.category.model.Category
 import com.gmainer.budgetbook.category.model.CategoryType
 import com.gmainer.budgetbook.category.model.toResponse
 import com.gmainer.budgetbook.categorybooking.dto.BudgetSummary
-import com.gmainer.budgetbook.categorybooking.dto.BudgetSummaryFilter
 import com.gmainer.budgetbook.categorybooking.dto.CategoryBookingOverview
+import com.gmainer.budgetbook.common.model.BookingFilter
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
 class BudgetSummaryService(private val bookingRepository: BookingRepository) {
 
-    fun determineBudgetSummary(filter: BudgetSummaryFilter): BudgetSummary {
+    fun determineBudgetSummary(filter: BookingFilter): BudgetSummary {
         val bookings = fetchBookings(filter)
         val overviews = determineOverviews(bookings)
         val income = bookings.filter { it.category.categoryType == CategoryType.INCOME }.sumOf { it.amount }
@@ -29,18 +29,11 @@ class BudgetSummaryService(private val bookingRepository: BookingRepository) {
         )
     }
 
-    private fun fetchBookings(filter: BudgetSummaryFilter): List<Booking> {
+    private fun fetchBookings(filter: BookingFilter): List<Booking> {
         return if (filter.accountId != null) {
-            bookingRepository.findByBookingDateBetweenAndAccountId(
-                filter.dateFrom,
-                filter.dateTo,
-                filter.accountId
-            )
+            bookingRepository.findByBookingDateBetweenAndAccountIdOrderByBookingDateDesc(filter.dateFrom, filter.dateTo, filter.accountId)
         } else {
-            bookingRepository.findByBookingDateBetween(
-                filter.dateFrom,
-                filter.dateTo
-            )
+            bookingRepository.findByBookingDateBetweenOrderByBookingDateDesc(filter.dateFrom, filter.dateTo)
         }
     }
 
@@ -90,4 +83,5 @@ class BudgetSummaryService(private val bookingRepository: BookingRepository) {
 
         return if (totalAmount > 0) (categoryAmount / totalAmount) * 100 else 0.0
     }
+
 }

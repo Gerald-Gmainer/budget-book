@@ -36,7 +36,6 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
         return (
             <div key={categoryBooking.category.id}>
                 <CButton
-                    color="link"
                     className="d-flex align-items-center category-button"
                     onClick={() => toggleCategory(categoryBooking.category.id)}
                 >
@@ -72,19 +71,23 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
         );
     };
 
+    const renderToggle = () => {
+        return (<CButtonGroup>
+            <CButton size="sm" color={viewMode === 'list' ? 'primary' : 'secondary'} onClick={() => setViewMode('list')}>
+                <CIcon icon={cilList}/>
+            </CButton>
+            <CButton size="sm" color={viewMode === 'grouped' ? 'primary' : 'secondary'} onClick={() => setViewMode('grouped')}>
+                <CIcon icon={cilGrid}/>
+            </CButton>
+        </CButtonGroup>)
+    }
+
     return (
         <CCard className="mb-3">
             <CCardBody className="card-content">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h5>Transactions</h5>
-                    <CButtonGroup>
-                        <CButton size="sm" color={viewMode === 'list' ? 'primary' : 'secondary'} onClick={() => setViewMode('list')}>
-                            <CIcon icon={cilList}/>
-                        </CButton>
-                        <CButton size="sm" color={viewMode === 'grouped' ? 'primary' : 'secondary'} onClick={() => setViewMode('grouped')}>
-                            <CIcon icon={cilGrid}/>
-                        </CButton>
-                    </CButtonGroup>
+                    {renderToggle()}
                 </div>
                 {viewMode === 'grouped' ? renderGroupedView() : <ul className="list-group list-group-flush">{renderListView()}</ul>}
             </CCardBody>

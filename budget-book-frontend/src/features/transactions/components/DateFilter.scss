@@ -11,4 +11,12 @@
       text-align: center;
     }
   }
+
+  .date-picker-group {
+    margin: 0 16px;
+    
+    input {
+      border-radius: 0;
+    }
+  }
 }

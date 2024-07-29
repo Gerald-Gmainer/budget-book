@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {CButton, CButtonGroup, CInputGroup} from '@coreui/react';
+import {CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CInputGroup,} from '@coreui/react';
 import DatePicker from 'react-datepicker';
 import {addMonths, subMonths} from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -27,33 +27,33 @@ const DateFilter = () => {
 
     return (
         <div className="date-filter">
-            <CButtonGroup>
-                {Object.values(PeriodEnum).map((filter) => (
-                    /* @ts-ignore */
-                    <CButton
-                        key={filter}
-                        color="primary"
-                        variant="outline"
-                        active={selectedDateFilter === filter}
-                        onClick={() => changeDateFilter(filter)}
-                    >
-                        {filter}
-                    </CButton>
-                ))}
-            </CButtonGroup>
+            <CDropdown>
+                <CDropdownToggle color="secondary" variant="outline">
+                    {selectedDateFilter}
+                </CDropdownToggle>
+                <CDropdownMenu>
+                    {Object.values(PeriodEnum).map((filter) => (
+                        <CDropdownItem
+                            key={filter}
+                            active={selectedDateFilter === filter}
+                            onClick={() => changeDateFilter(filter)}
+                        >
+                            {filter}
+                        </CDropdownItem>
+                    ))}
+                </CDropdownMenu>
+            </CDropdown>
 
-            <CInputGroup>
-                {/* @ts-ignore */}
-                <CButton onClick={handlePreviousMonth}>{"<"}</CButton>
+            <CInputGroup className="date-picker-group">
+                <CButton onClick={handlePreviousMonth} className="btn btn-outline-secondary">{"<"}</CButton>
                 <DatePicker
                     selected={selectedDate}
                     onChange={handleDateChange}
                     dateFormat="dd-MM-yyyy"
                     showMonthYearPicker
-                    className="form-control"
+                    className="form-control btn btn-outline-secondary"
                 />
-                {/* @ts-ignore */}
-                <CButton onClick={handleNextMonth}>{">"}</CButton>
+                <CButton onClick={handleNextMonth} className="btn btn-outline-secondary">{">"}</CButton>
             </CInputGroup>
         </div>
     );

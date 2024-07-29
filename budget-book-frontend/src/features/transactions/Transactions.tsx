@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import AccountDropdown from "./components/AccountDropdown";
 import DateFilter from "./components/DateFilter";
@@ -11,7 +11,6 @@ import {fetchBudgetSummary} from './slices/budgetSummarySlice';
 import {fetchCategoryBookings} from "./slices/bookingsSlice";
 import './Transactions.scss';
 import {AppDispatch, RootState} from "../../app/store";
-import ListView from "./components/ListView";
 
 const Transactions = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -20,8 +19,6 @@ const Transactions = () => {
 
     const {data: summaryData, status: summaryStatus, error: summaryError} = useSelector((state: RootState) => state.budgetSummary);
     const {data: bookingsData, status: bookingsStatus, error: bookingsError} = useSelector((state: RootState) => state.bookings);
-
-    const [groupByCategory, setGroupByCategory] = useState(false); // State for the ListView toggle
 
     useEffect(() => {
         dispatch(fetchBudgetSummary({date}));
@@ -45,16 +42,13 @@ const Transactions = () => {
     ) || [];
 
     return (
-        <div className="transactions-container container">
+        <div className="transactions-container">
             <div className="transactions-header">
                 <AccountDropdown/>
                 <CategoryTypeFilter/>
-                <ListView groupByCategory={groupByCategory} setGroupByCategory={setGroupByCategory}/>
-                <CreateButton className="create-button"/>
-            </div>
-
-            <div className="transactions-header">
                 <DateFilter/>
+                <div className="spacer"/>
+                <CreateButton className="create-button"/>
             </div>
 
             <div className="row">

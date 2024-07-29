@@ -11,7 +11,7 @@ const CategoryTypeFilter = () => {
             {Object.values(CategoryTypeEnum).map((filter) => (
                 <CButton
                     key={filter}
-                    color="primary"
+                    color="secondary"
                     variant="outline"
                     active={selectedCategoryTypeFilter?.toUpperCase() === filter.toUpperCase()}
                     onClick={() => changeCategoryTypeFilter(filter)}

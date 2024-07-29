@@ -43,7 +43,7 @@ const AccountDropdown = () => {
 
     return (
         <CDropdown variant="btn-group">
-            <CDropdownToggle color="primary" variant="outline">
+            <CDropdownToggle color="secondary" variant="outline">
                 {selectedAccountName}
             </CDropdownToggle>
             <CDropdownMenu>

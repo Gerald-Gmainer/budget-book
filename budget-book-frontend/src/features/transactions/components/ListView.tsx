@@ -9,6 +9,7 @@ interface ListViewProps {
 const ListView: React.FC<ListViewProps> = ({groupByCategory, setGroupByCategory}) => {
     return (
         <div className="list-view-toggle">
+            {/* @ts-ignore */}
             <CButton
                 color="primary"
                 onClick={() => setGroupByCategory(!groupByCategory)}

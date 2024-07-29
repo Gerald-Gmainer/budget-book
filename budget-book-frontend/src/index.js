@@ -1,16 +1,12 @@
-import '@coreui/coreui/dist/css/coreui.min.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react';
-import {createRoot} from 'react-dom/client';
-import {Provider} from 'react-redux';
-import {store} from './app/store';
+import ReactDOM from 'react-dom/client';
+import './index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-import './app/index.css';
+import {Provider} from "react-redux";
+import {store} from './app/store';
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
         <App/>

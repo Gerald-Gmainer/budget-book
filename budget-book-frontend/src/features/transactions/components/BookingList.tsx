@@ -35,6 +35,7 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
         const IconComponent: SvgIconComponent = mapIcon(categoryBooking.category.iconName);
         return (
             <div key={categoryBooking.category.id}>
+                {/* @ts-ignore */}
                 <CButton
                     color="link"
                     className="d-flex align-items-center category-button"

@@ -29,6 +29,7 @@ const DateFilter = () => {
         <div className="date-filter">
             <CButtonGroup>
                 {Object.values(PeriodEnum).map((filter) => (
+                    /* @ts-ignore */
                     <CButton
                         key={filter}
                         color="primary"
@@ -42,6 +43,7 @@ const DateFilter = () => {
             </CButtonGroup>
 
             <CInputGroup>
+                {/* @ts-ignore */}
                 <CButton onClick={handlePreviousMonth}>{"<"}</CButton>
                 <DatePicker
                     selected={selectedDate}
@@ -50,6 +52,7 @@ const DateFilter = () => {
                     showMonthYearPicker
                     className="form-control"
                 />
+                {/* @ts-ignore */}
                 <CButton onClick={handleNextMonth}>{">"}</CButton>
             </CInputGroup>
         </div>

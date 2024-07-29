@@ -44,8 +44,6 @@ const Transactions = () => {
         overview.category.type === selectedCategoryTypeFilter
     ) || [];
 
-    console.log(filteredBookings);
-
     return (
         <div className="transactions-container container">
             <div className="transactions-header">

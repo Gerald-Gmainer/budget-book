@@ -12,8 +12,11 @@ const dateFilterSlice = createSlice({
         setPeriod: (state, action) => {
             state.period = action.payload;
         },
+        setDate: (state, action) => {
+            state.date = action.payload;
+        }
     },
 });
 
-export const {setDateFilter} = dateFilterSlice.actions;
+export const {setPeriod, setDate} = dateFilterSlice.actions;
 export default dateFilterSlice.reducer;

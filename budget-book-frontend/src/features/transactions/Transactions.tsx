@@ -23,7 +23,7 @@ const Transactions = () => {
     useEffect(() => {
         dispatch(fetchBudgetSummary({date}));
         dispatch(fetchCategoryBookings({date}));
-    }, [period]);
+    }, [period, date]);
 
     if (summaryStatus === 'loading') {
         return <div>Loading...</div>;
@@ -54,7 +54,7 @@ const Transactions = () => {
             <div className="row">
                 <div className="col-md-5">
                     {summaryData && <BudgetOverview data={summaryData}/>}
-                    <CategoryGraph data={filteredOverviews}/>
+                    {(summaryData && summaryData.overviews.length > 0) && <CategoryGraph data={filteredOverviews}/>}
                 </div>
                 <div className="col-md-7">
                     <BookingList data={filteredBookings}/>

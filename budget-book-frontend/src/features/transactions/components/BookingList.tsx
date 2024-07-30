@@ -15,6 +15,18 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
     const [openCategories, setOpenCategories] = useState<{ [key: number]: boolean }>({});
     const [viewMode, setViewMode] = useState<'list' | 'grouped'>('grouped');
 
+    if (data.length <= 0) {
+        return (
+            <CCard className="mb-3">
+                <CCardBody className="card-content">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h6>No Transactions</h6>
+                    </div>
+                </CCardBody>
+            </CCard>
+        )
+    }
+
     const toggleCategory = (categoryId: number) => {
         setOpenCategories((prevOpenCategories) => ({
             ...prevOpenCategories,

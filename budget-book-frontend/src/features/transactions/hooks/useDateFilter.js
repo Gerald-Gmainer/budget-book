@@ -1,17 +1,25 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {setDateFilter} from '../slices/dateFilterSlice';
+import {setDate, setPeriod} from "../slices/dateFilterSlice";
+import {format} from "date-fns";
 
 const useDateFilter = () => {
     const dispatch = useDispatch();
-    const selectedDateFilter = useSelector((state) => state.dateFilter.period);
+    const selectedPeriod = useSelector((state) => state.dateFilter.period);
+    const selectedDate = useSelector((state) => state.dateFilter.date);
 
-    const changeDateFilter = (dateFilter) => {
-        dispatch(setDateFilter(dateFilter));
+    const changeSelectedPeriod = (period) => {
+        dispatch(setPeriod(period));
     };
 
+    const changeSelectedDate = (date) => {
+        dispatch(setDate(format(date, 'yyyy-MM-dd')));
+    }
+
     return {
-        selectedDateFilter,
-        changeDateFilter,
+        selectedPeriod,
+        selectedDate,
+        changeSelectedPeriod,
+        changeSelectedDate,
     };
 };
 

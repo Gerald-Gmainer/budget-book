@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {CButton, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CInputGroup,} from '@coreui/react';
 import DatePicker from 'react-datepicker';
 import {addMonths, subMonths} from 'date-fns';
@@ -8,35 +8,34 @@ import PeriodEnum from "../../../constants/periodEnum";
 import './DateFilter.scss'
 
 const DateFilter = () => {
-    const {selectedDateFilter, changeDateFilter} = useDateFilter();
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const {selectedPeriod, selectedDate, changeSelectedPeriod, changeSelectedDate} = useDateFilter();
 
     const handleDateChange = (date: any) => {
-        setSelectedDate(date);
+        changeSelectedDate(date);
     };
 
     const handlePreviousMonth = () => {
         const newDate = subMonths(selectedDate, 1);
-        setSelectedDate(newDate);
+        changeSelectedDate(newDate);
     };
 
     const handleNextMonth = () => {
         const newDate = addMonths(selectedDate, 1);
-        setSelectedDate(newDate);
+        changeSelectedDate(newDate);
     };
 
     return (
         <div className="date-filter">
             <CDropdown>
                 <CDropdownToggle color="secondary" variant="outline">
-                    {selectedDateFilter}
+                    {selectedPeriod}
                 </CDropdownToggle>
                 <CDropdownMenu>
                     {Object.values(PeriodEnum).map((filter) => (
                         <CDropdownItem
                             key={filter}
-                            active={selectedDateFilter === filter}
-                            onClick={() => changeDateFilter(filter)}
+                            active={selectedPeriod === filter}
+                            onClick={() => changeSelectedPeriod(filter)}
                         >
                             {filter}
                         </CDropdownItem>

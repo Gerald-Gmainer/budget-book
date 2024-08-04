@@ -1,0 +1,18 @@
+.transactions-header {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.create-button {
+  margin-left: auto;
+}
+
+.list-view-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1;
+}

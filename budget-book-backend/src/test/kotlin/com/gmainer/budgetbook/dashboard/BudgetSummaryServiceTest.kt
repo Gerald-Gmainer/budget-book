@@ -9,8 +9,8 @@ import com.gmainer.budgetbook.category.model.Category
 import com.gmainer.budgetbook.category.model.CategoryColor
 import com.gmainer.budgetbook.category.model.CategoryIcon
 import com.gmainer.budgetbook.category.model.CategoryType
-import com.gmainer.budgetbook.dashboard.dto.BudgetSummaryFilter
-import com.gmainer.budgetbook.dashboard.service.BudgetSummaryService
+import com.gmainer.budgetbook.categorybooking.service.BudgetSummaryService
+import com.gmainer.budgetbook.common.model.BookingFilter
 import com.gmainer.budgetbook.testhelper.MockitoHelper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -53,7 +53,7 @@ class BudgetSummaryServiceTest {
             bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())
         ).thenReturn(listOf())
 
-        val filter = BudgetSummaryFilter(dateFrom = filterDateStart, dateTo = filterDateEnd)
+        val filter = BookingFilter(dateFrom = filterDateStart, dateTo = filterDateEnd)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
 
         assertEquals(BigDecimal(0), summary.income)
@@ -95,7 +95,7 @@ class BudgetSummaryServiceTest {
             bookingRepository.findByBookingDateBetween(MockitoHelper.anyObject(), MockitoHelper.anyObject())
         ).thenReturn(bookings)
 
-        val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd)
+        val filter = BookingFilter(filterDateStart, filterDateEnd)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
 
         assertEquals(BigDecimal(100), summary.income)
@@ -143,7 +143,7 @@ class BudgetSummaryServiceTest {
             )
         ).thenReturn(bookings)
 
-        val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd, 1L)
+        val filter = BookingFilter(filterDateStart, filterDateEnd, 1L)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
 
         assertEquals(BigDecimal(100), summary.income)
@@ -208,7 +208,7 @@ class BudgetSummaryServiceTest {
             )
         ).thenReturn(bookings)
 
-        val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd, 1L)
+        val filter = BookingFilter(filterDateStart, filterDateEnd, 1L)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
 
         assertEquals(BigDecimal(100), summary.income)
@@ -271,7 +271,7 @@ class BudgetSummaryServiceTest {
             )
         ).thenReturn(bookings)
 
-        val filter = BudgetSummaryFilter(filterDateStart, filterDateEnd, 1L)
+        val filter = BookingFilter(filterDateStart, filterDateEnd, 1L)
         val summary = budgetSummaryService.determineBudgetSummary(filter)
 
         assertEquals(BigDecimal(100), summary.income)

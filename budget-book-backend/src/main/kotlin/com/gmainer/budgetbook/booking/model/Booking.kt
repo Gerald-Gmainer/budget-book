@@ -1,9 +1,11 @@
 package com.gmainer.budgetbook.booking.model
 
 import com.gmainer.budgetbook.account.model.Account
+import com.gmainer.budgetbook.account.model.toResponse
 import com.gmainer.budgetbook.booking.dto.BookingCreateRequest
 import com.gmainer.budgetbook.booking.dto.BookingResponse
 import com.gmainer.budgetbook.category.model.Category
+import com.gmainer.budgetbook.category.model.toResponse
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import java.math.BigDecimal
@@ -49,10 +51,8 @@ fun Booking.toResponse(): BookingResponse {
         bookingDate = this.bookingDate,
         amount = this.amount,
         description = this.description,
-        categoryId = this.category.id,
-        categoryName = this.category.name,
-        accountId = this.account.id,
-        accountName = this.account.name,
+        category = this.category.toResponse(),
+        account = this.account.toResponse(),
     )
 }
 

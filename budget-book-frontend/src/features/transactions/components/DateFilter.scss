@@ -1,0 +1,22 @@
+.date-filter {
+  display: flex;
+  align-items: center;
+
+  .input-group {
+    display: flex;
+    align-items: center;
+
+    .form-control {
+      width: auto;
+      text-align: center;
+    }
+  }
+
+  .date-picker-group {
+    margin: 0 16px;
+    
+    input {
+      border-radius: 0;
+    }
+  }
+}

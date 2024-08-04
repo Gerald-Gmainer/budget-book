@@ -1,0 +1,29 @@
+
+.category-button {
+    text-decoration: none;
+    color: white;
+    padding: 10px 0;
+}
+
+.category-button:hover {
+    text-decoration: none;
+}
+
+.category-text {
+    padding-left: 10px;
+}
+
+.booking-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.booking-item div {
+    flex: 1;
+    text-align: left;
+}
+
+.booking-item div:last-child {
+    text-align: right;
+}

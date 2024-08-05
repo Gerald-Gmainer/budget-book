@@ -8,6 +8,7 @@ import com.gmainer.budgetbook.category.repository.CategoryRepository
 import com.gmainer.budgetbook.categorybooking.dto.CategoryBookingResponse
 import com.gmainer.budgetbook.common.model.BookingFilter
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 
 @Service
 class CategoryBookingService(
@@ -16,9 +17,7 @@ class CategoryBookingService(
 ) {
     fun determineCategoryBookings(filter: BookingFilter): List<CategoryBookingResponse> {
         val bookings = if (filter.accountId != null) {
-            bookingRepository.findByBookingDateBetweenAndAccountIdOrderByBookingDateDesc(
-                filter.dateFrom, filter.dateTo, filter.accountId
-            )
+            bookingRepository.findByBookingDateBetweenAndAccountIdOrderByBookingDateDesc(filter.dateFrom, filter.dateTo, filter.accountId)
         } else {
             bookingRepository.findByBookingDateBetweenOrderByBookingDateDesc(filter.dateFrom, filter.dateTo)
         }
@@ -34,7 +33,9 @@ class CategoryBookingService(
                 CategoryBookingResponse(
                     category = category.toResponse(),
                     bookings = categoryBookings,
-                    children = mutableListOf()
+                    children = mutableListOf(),
+                    amount = BigDecimal.ZERO,
+                    percentage = 0.0
                 )
             } else {
                 null
@@ -43,7 +44,11 @@ class CategoryBookingService(
 
         val nestedCategories = buildNestedCategoryResponse(categoryBookings, categoryMap)
 
-        return nestedCategories.sortedByDescending { calculateTotalAmount(it) }
+        val totalAmount = nestedCategories.sumOf { it.amount }
+
+        nestedCategories.forEach { updatePercentage(it, totalAmount) }
+
+        return nestedCategories.sortedByDescending { it.amount }
     }
 
     private fun buildNestedCategoryResponse(
@@ -61,12 +66,22 @@ class CategoryBookingService(
             }
         }
 
+        topCategories.forEach { calculateTotalAmount(it) }
+
         return topCategories.filter { it.bookings.isNotEmpty() || it.children.isNotEmpty() }
     }
 
-    private fun calculateTotalAmount(categoryBooking: CategoryBookingResponse): Double {
-        val directTotal = categoryBooking.bookings.sumOf { it.amount.toDouble() }
+    private fun calculateTotalAmount(categoryBooking: CategoryBookingResponse): BigDecimal {
+        val directTotal = categoryBooking.bookings.sumOf { it.amount }
         val childrenTotal = categoryBooking.children.sumOf { calculateTotalAmount(it) }
-        return directTotal + childrenTotal
+        categoryBooking.amount = directTotal + childrenTotal
+        return categoryBooking.amount
+    }
+
+    private fun updatePercentage(categoryBooking: CategoryBookingResponse, totalAmount: BigDecimal) {
+        if (totalAmount > BigDecimal.ZERO) {
+            categoryBooking.percentage = categoryBooking.amount.divide(totalAmount, 4, BigDecimal.ROUND_HALF_UP).toDouble() * 100
+        }
+        categoryBooking.children.forEach { updatePercentage(it, totalAmount) }
     }
 }

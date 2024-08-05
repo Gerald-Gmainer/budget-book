@@ -4,9 +4,14 @@
 }
 
 .category-button {
-  cursor: pointer;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  
+  .category-total {
+    margin-left: auto;
+    padding-right: 10px;
+  }
 }
 
 .category-icon {

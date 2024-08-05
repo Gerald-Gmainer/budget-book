@@ -38,11 +38,3 @@ class CategoryBookingController(private val summaryService: BudgetSummaryService
         return ResponseEntity.ok(bookings)
     }
 }
-
-// TODO
-// FE lädt getCategoryBookings
-// FE dateFilter erweitern mit datepicker
-// left/right button wären auch super
-// FE braucht group by category toggle. default on
-// wenn group by button aus, category-bookings in FE umformatieren
-// was in react store speichern?

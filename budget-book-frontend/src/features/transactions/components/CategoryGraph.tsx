@@ -3,6 +3,7 @@ import {CCard, CCardBody} from '@coreui/react';
 import ReactEcharts from 'echarts-for-react';
 import './CategoryGraph.scss';
 import {CategoryBookingOverview} from '../../../types';
+import {formatCurrency} from "../../../utils/formatCurrency";
 
 const CategoryGraph: React.FC<{ data: CategoryBookingOverview[] }> = ({data}) => {
     const parentOverviews = data;
@@ -23,7 +24,10 @@ const CategoryGraph: React.FC<{ data: CategoryBookingOverview[] }> = ({data}) =>
         return {
             tooltip: {
                 trigger: 'item',
-                formatter: '{b}: {c} ({d}%)',
+                formatter: (params: any) => {
+                    const value = formatCurrency(params.value);
+                    return `${params.name}: <b>${value}</b> (${params.percent}%)`;
+                },
             },
             series: [
                 {

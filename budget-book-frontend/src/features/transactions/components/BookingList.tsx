@@ -6,6 +6,7 @@ import {SvgIconComponent} from '@mui/icons-material';
 import './BookingList.scss';
 import {Booking, CategoryBooking} from '../../../types';
 import {mapIcon} from '../../../utils/mapIcon';
+import {formatCurrency} from "../../../utils/formatCurrency";
 
 interface BookingsListProps {
     data: CategoryBooking[];
@@ -39,7 +40,7 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
             <li key={booking.id} className="list-group-item booking-item">
                 <div>{booking.bookingDate}</div>
                 <div>{booking.description}</div>
-                <div>${booking.amount}</div>
+                <div>{formatCurrency(booking.amount)}</div>
             </li>
         ));
 
@@ -48,12 +49,15 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
         return (
             <div key={categoryBooking.category.id}>
                 <CButton
-                    className="d-flex align-items-center category-button"
+                    className="d-flex align-items-center justify-content-between category-button"
                     onClick={() => toggleCategory(categoryBooking.category.id)}
                 >
-                    <CIcon icon={openCategories[categoryBooking.category.id] ? cilChevronBottom : cilChevronRight}/>
-                    <IconComponent style={{color: categoryBooking.category.colorCode}} className="category-icon"/>
-                    <span className="category-text">{categoryBooking.category.name}</span>
+                    <div className="d-flex align-items-center">
+                        <CIcon icon={openCategories[categoryBooking.category.id] ? cilChevronBottom : cilChevronRight}/>
+                        <IconComponent style={{color: categoryBooking.category.colorCode}} className="category-icon"/>
+                        <span className="category-text">{categoryBooking.category.name}</span>
+                    </div>
+                    <span className="category-total">{formatCurrency(categoryBooking.amount)}</span>
                 </CButton>
                 <CCollapse visible={openCategories[categoryBooking.category.id]}>
                     <ul className="list-group list-group-flush collapse-category">
@@ -64,6 +68,7 @@ const BookingList: React.FC<BookingsListProps> = ({data}) => {
             </div>
         );
     };
+
 
     const renderGroupedView = () => data.map((categoryBooking) => renderCategory(categoryBooking));
 
